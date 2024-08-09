@@ -93,12 +93,17 @@ const style = Style(({ style }) => {
     color: rgba(255, 255, 255, 0.05); 
     overflow: hidden; 
     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
-    -webkit-mask-image: radial-gradient(circle at 60% 60%, transparent, black 97%);
+    -webkit-mask-image: radial-gradient(circle at 60% 60%, transparent, black 50%);
     mask-image: radial-gradient(circle at 60% 60%, transparent 0%, black 50%);
     font-size: 5rem; 
     line-height: 5rem;
     `;
     style `
+    @media screen and (max-width: 1000px) {
+        -webkit-mask-image: radial-gradient(circle at 50% 60%, transparent, black 80%);
+        mask-image: radial-gradient(circle at 50% 60%, transparent 0%, black 80%);
+    }
+
     @media screen and (max-height: 1000px) {
         ${backdrop} {
             font-size: 5rem; 
