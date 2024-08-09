@@ -122,28 +122,25 @@ const style = Style(({ style }) => {
             font-size: 2.5rem; 
             line-height: 2.5rem;
         }
-    }
-
-    ${backdrop}>div {
+    }`;
+    const scrollAnim = style.class `
         white-space: nowrap;
         overflow: hidden;
         display: inline-block;
-        animation-name: scroll;
-        animation-duration: 20s;
-        animation-timing-function: linear;
-        animation-iteration-count: infinite;
-        animation-play-state: running;
-    }
-    ${backdrop}>div>p {
+        animation: scroll 20s linear infinite;
+        animation-delay: -5s;
+    `;
+    style `
+    ${scrollAnim} p {
         display: inline-block
     }
 
     @keyframes scroll {
         0% {
-            transform: translate3d(0%, 0, 0);
+            transform: translateX(0%);
         }
         100% {
-            transform: translate3d(-50%, 0, 0);
+            transform: translateX(-50%);
         }
     }
     `;
@@ -151,7 +148,8 @@ const style = Style(({ style }) => {
         wrapper,
         backdrop,
         bottomCurve,
-        header
+        header,
+        scrollAnim
     };
 });
 export const landing = Macro(class Landing extends MacroElement {
@@ -171,7 +169,7 @@ export const landing = Macro(class Landing extends MacroElement {
     for (let i = 0; i < 2; ++i) {
         html += (() => {
             return `
-            <div>
+            <div class="${style.scrollAnim}">
                 ${(() => {
                 let html = "";
                 for (let i = 0; i < 2; ++i) {
@@ -188,7 +186,7 @@ export const landing = Macro(class Landing extends MacroElement {
             })()}
             </div>
 
-            <div>
+            <div class="${style.scrollAnim}">
                 ${(() => {
                 let html = "";
                 for (let i = 0; i < 2; ++i) {
@@ -205,7 +203,7 @@ export const landing = Macro(class Landing extends MacroElement {
             })()}
             </div>
 
-            <div>
+            <div class="${style.scrollAnim}">
                 ${(() => {
                 let html = "";
                 for (let i = 0; i < 2; ++i) {
@@ -222,7 +220,7 @@ export const landing = Macro(class Landing extends MacroElement {
             })()}
             </div>
 
-            <div>
+            <div class="${style.scrollAnim}">
                 ${(() => {
                 let html = "";
                 for (let i = 0; i < 2; ++i) {
@@ -239,7 +237,7 @@ export const landing = Macro(class Landing extends MacroElement {
             })()}
             </div>
 
-            <div>
+            <div class="${style.scrollAnim}">
                 ${(() => {
                 let html = "";
                 for (let i = 0; i < 2; ++i) {
@@ -256,7 +254,7 @@ export const landing = Macro(class Landing extends MacroElement {
             })()}
             </div>
 
-            <div>
+            <div class="${style.scrollAnim}">
                 ${(() => {
                 let html = "";
                 for (let i = 0; i < 2; ++i) {
@@ -273,7 +271,7 @@ export const landing = Macro(class Landing extends MacroElement {
             })()}
             </div>
 
-            <div>
+            <div class="${style.scrollAnim}">
                 ${(() => {
                 let html = "";
                 for (let i = 0; i < 2; ++i) {
@@ -290,7 +288,7 @@ export const landing = Macro(class Landing extends MacroElement {
             })()}
             </div>
 
-            <div>
+            <div class="${style.scrollAnim}">
                 ${(() => {
                 let html = "";
                 for (let i = 0; i < 2; ++i) {
@@ -307,7 +305,7 @@ export const landing = Macro(class Landing extends MacroElement {
             })()}
             </div>
 
-            <div>
+            <div class="${style.scrollAnim}">
                 ${(() => {
                 let html = "";
                 for (let i = 0; i < 2; ++i) {
@@ -324,7 +322,7 @@ export const landing = Macro(class Landing extends MacroElement {
             })()}
             </div>
 
-            <div>
+            <div class="${style.scrollAnim}">
                 ${(() => {
                 let html = "";
                 for (let i = 0; i < 2; ++i) {
@@ -341,7 +339,7 @@ export const landing = Macro(class Landing extends MacroElement {
             })()}
             </div>
 
-            <div>
+            <div class="${style.scrollAnim}">
                 ${(() => {
                 let html = "";
                 for (let i = 0; i < 2; ++i) {
