@@ -92,13 +92,38 @@ const style = Style(({ style }) => {
     height: 100%; 
     color: rgba(255, 255, 255, 0.05); 
     overflow: hidden; 
-    font-size: 5rem; 
     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
     -webkit-mask-image: radial-gradient(circle at 60% 60%, transparent, black 97%);
     mask-image: radial-gradient(circle at 60% 60%, transparent 00%, black 40%);
+    font-size: 5rem; 
     line-height: 5rem;
     `;
     style `
+    @media screen and (max-height: 1000px) {
+        ${backdrop} {
+            font-size: 5rem; 
+            line-height: 5rem;
+        }
+    }
+    @media screen and (max-height: 900px) {
+        ${backdrop} {
+            font-size: 4rem; 
+            line-height: 4rem;
+        }
+    }
+    @media screen and (max-height: 800px) {
+        ${backdrop} {
+            font-size: 3rem; 
+            line-height: 3rem;
+        }
+    }
+    @media screen and (max-height: 700px) {
+        ${backdrop} {
+            font-size: 2.5rem; 
+            line-height: 2.5rem;
+        }
+    }
+
     ${backdrop}>div {
         white-space: nowrap;
         overflow: hidden;
@@ -152,7 +177,7 @@ export const landing = Macro(class Landing extends MacroElement {
                 let html = "";
                 for (let i = 0; i < 2; ++i) {
                     html += `<p>`;
-                    for (let j = 0; j < 5; ++j) {
+                    for (let j = 0; j < 8; ++j) {
                         if (j % 2 === 0)
                             html += `<span style="color: rgba(255, 0, 0, 1);">T</span>RANSFORM`;
                         else
@@ -169,7 +194,7 @@ export const landing = Macro(class Landing extends MacroElement {
                 let html = "";
                 for (let i = 0; i < 2; ++i) {
                     html += `<p>`;
-                    for (let j = 0; j < 6; ++j) {
+                    for (let j = 0; j < 9; ++j) {
                         if (j % 2 === 0)
                             html += `<span style="color: rgba(255, 83, 0, 1);">E</span>NGINEER`;
                         else
@@ -186,7 +211,7 @@ export const landing = Macro(class Landing extends MacroElement {
                 let html = "";
                 for (let i = 0; i < 2; ++i) {
                     html += `<p>`;
-                    for (let j = 0; j < 7; ++j) {
+                    for (let j = 0; j < 10; ++j) {
                         if (j % 2 === 0)
                             html += `<span style="color: rgba(255, 165, 0, 1);">C</span>HANGE`;
                         else
@@ -203,7 +228,7 @@ export const landing = Macro(class Landing extends MacroElement {
                 let html = "";
                 for (let i = 0; i < 2; ++i) {
                     html += `<p>`;
-                    for (let j = 0; j < 8; ++j) {
+                    for (let j = 0; j < 11; ++j) {
                         if (j % 2 === 0)
                             html += `<span style="color: rgba(255, 210, 0, 1);">H</span>YBRID`;
                         else
@@ -220,7 +245,7 @@ export const landing = Macro(class Landing extends MacroElement {
                 let html = "";
                 for (let i = 0; i < 2; ++i) {
                     html += `<p>`;
-                    for (let j = 0; j < 7; ++j) {
+                    for (let j = 0; j < 10; ++j) {
                         if (j % 2 === 0)
                             html += `<span style="color: rgba(255, 255, 0, 1);">N</span>ATURE`;
                         else
@@ -237,7 +262,7 @@ export const landing = Macro(class Landing extends MacroElement {
                 let html = "";
                 for (let i = 0; i < 2; ++i) {
                     html += `<p>`;
-                    for (let j = 0; j < 8; ++j) {
+                    for (let j = 0; j < 11; ++j) {
                         if (j % 2 === 0)
                             html += `<span style="color: rgba(128, 192, 0, 1);">I</span>NVENT`;
                         else
@@ -254,7 +279,7 @@ export const landing = Macro(class Landing extends MacroElement {
                 let html = "";
                 for (let i = 0; i < 2; ++i) {
                     html += `<p>`;
-                    for (let j = 0; j < 6; ++j) {
+                    for (let j = 0; j < 9; ++j) {
                         if (j % 2 === 0)
                             html += `<span style="color: rgba(0, 128, 0, 1);">C</span>ATALYSE`;
                         else
@@ -271,7 +296,7 @@ export const landing = Macro(class Landing extends MacroElement {
                 let html = "";
                 for (let i = 0; i < 2; ++i) {
                     html += `<p>`;
-                    for (let j = 0; j < 6; ++j) {
+                    for (let j = 0; j < 9; ++j) {
                         if (j % 2 === 0)
                             html += `<span style="color: rgba(0, 64, 128, 1);">O</span>PERATE`;
                         else
@@ -288,7 +313,7 @@ export const landing = Macro(class Landing extends MacroElement {
                 let html = "";
                 for (let i = 0; i < 2; ++i) {
                     html += `<p>`;
-                    for (let j = 0; j < 6; ++j) {
+                    for (let j = 0; j < 9; ++j) {
                         if (j % 2 === 0)
                             html += `<span style="color: rgba(0, 0, 255, 1);">L</span>EAGUE`;
                         else
@@ -305,7 +330,7 @@ export const landing = Macro(class Landing extends MacroElement {
                 let html = "";
                 for (let i = 0; i < 2; ++i) {
                     html += `<p>`;
-                    for (let j = 0; j < 7; ++j) {
+                    for (let j = 0; j < 10; ++j) {
                         if (j % 2 === 0)
                             html += `<span style="color: rgba(38, 0, 193, 1);">O</span>BEISM`;
                         else
@@ -322,7 +347,7 @@ export const landing = Macro(class Landing extends MacroElement {
                 let html = "";
                 for (let i = 0; i < 2; ++i) {
                     html += `<p>`;
-                    for (let j = 0; j < 7; ++j) {
+                    for (let j = 0; j < 10; ++j) {
                         if (j % 2 === 0)
                             html += `<span style="color: rgba(75, 0, 130, 1);">R</span>UMBLE`;
                         else
