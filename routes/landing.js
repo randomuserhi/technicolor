@@ -94,7 +94,7 @@ const style = Style(({ style }) => {
     overflow: hidden; 
     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
     -webkit-mask-image: radial-gradient(circle at 60% 60%, transparent, black 97%);
-    mask-image: radial-gradient(circle at 60% 60%, transparent 00%, black 40%);
+    mask-image: radial-gradient(circle at 60% 60%, transparent 0%, black 50%);
     font-size: 5rem; 
     line-height: 5rem;
     `;
