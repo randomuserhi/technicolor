@@ -343,7 +343,7 @@ export const flower = Macro(class Flower extends MacroElement {
             line.model.position.x = (1 - t) * line.length - line.length / 2;
         }
         const sway = 3.5;
-        const introDuration = 1;
+        const introDuration = 2;
         if (this.time > introDuration) {
             const duration = 240;
             const t = this.time - introDuration;
