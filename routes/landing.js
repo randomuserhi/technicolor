@@ -133,7 +133,6 @@ const style = Style(({ style }) => {
         animation-timing-function: linear;
         animation-iteration-count: infinite;
         animation-play-state: running;
-        animation-delay: -10s;
     }
     ${backdrop}>div>p {
         display: inline-block
