@@ -7,7 +7,7 @@ loader.setDRACOLoader(dracoLoader);
 const loadedGLTF = new Map();
 const loadingGLTF = new Map();
 export async function loadGLTF(path) {
-    path = new URL("./js3party/three/examples/jsm/libs/draco/", document.baseURI).toString();
+    path = new URL(path, document.baseURI).toString();
     if (loadedGLTF.has(path)) {
         return new Promise((resolve) => {
             resolve(loadedGLTF.get(path));
