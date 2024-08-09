@@ -2,11 +2,12 @@ import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 const loader = new GLTFLoader();
 const dracoLoader = new DRACOLoader();
-dracoLoader.setDecoderPath("../js3party/three/examples/jsm/libs/draco/");
+dracoLoader.setDecoderPath(new URL("../js3party/three/examples/jsm/libs/draco/", document.baseURI).toString());
 loader.setDRACOLoader(dracoLoader);
 const loadedGLTF = new Map();
 const loadingGLTF = new Map();
 export async function loadGLTF(path) {
+    path = new URL("../js3party/three/examples/jsm/libs/draco/", document.baseURI).toString();
     if (loadedGLTF.has(path)) {
         return new Promise((resolve) => {
             resolve(loadedGLTF.get(path));
