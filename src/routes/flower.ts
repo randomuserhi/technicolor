@@ -452,7 +452,7 @@ export const flower = Macro(class Flower extends MacroElement {
 
         const sway = 3.5;
 
-        const introDuration = 1;
+        const introDuration = 2;
         if (this.time > introDuration) {
             const duration = 240;
             const t = this.time - introDuration;
