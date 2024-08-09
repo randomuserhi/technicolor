@@ -15,7 +15,8 @@
     "paths": {
       "@root/*": ["../assets/src/*"],
       "@/*": ["./@types/*"],
-      "troika-three-text": ["./@types/troika-three-text"]
+      "troika-three-text": ["./@types/troika-three-text"],
+      "troika-three-utils": ["./@types/troika-three-utils"]
     }
   },
   "include": ["./src/**/*"]

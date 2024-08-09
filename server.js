@@ -13,6 +13,7 @@ const server = http.createServer((req, res) => {
     const mimeTypes = {
         '.html': 'text/html',
         '.js': 'text/javascript',
+        '.mjs': 'text/javascript',
         '.css': 'text/css',
         '.json': 'application/json',
         '.png': 'image/png',

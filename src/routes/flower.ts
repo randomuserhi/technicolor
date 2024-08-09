@@ -1,21 +1,16 @@
 import { html, Macro, MacroElement } from "@/rhu/macro.js";
 import { Style } from "@/rhu/style.js";
-import { Color, DirectionalLight, Euler, Group, Mesh, MeshPhysicalMaterial, Object3D, PerspectiveCamera, PointLight, Quaternion, ReinhardToneMapping, Scene, SRGBColorSpace, Vector2, VSMShadowMap, WebGLRenderer } from "three";
+import { Color, ColorRepresentation, DirectionalLight, DoubleSide, Euler, Group, Mesh, MeshBasicMaterial, MeshPhysicalMaterial, Object3D, PerspectiveCamera, PointLight, Quaternion, ReinhardToneMapping, Scene, SRGBColorSpace, Vector2, VSMShadowMap, WebGLRenderer } from "three";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
 import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js';
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
+import { Text } from "troika-three-text";
+import { createDerivedMaterial } from "troika-three-utils";
 import { Bezier } from "../utils/bezier.js";
 import { loadGLTF } from "../utils/loaders.js";
 import { BokehPass } from "./BokehPass.js";
 import { MeshTransmissionMaterial } from "./MeshTransmissionMaterial.js";
-
-function mobileAndTabletCheck() {
-    let check = false;
-    (function(a){if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino|android|ipad|playbook|silk/i.test(a)||/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0,4))) check = true;})(navigator.userAgent||navigator.vendor||(window as any).opera);
-    return check;
-}
-const mobile = mobileAndTabletCheck();
 
 declare global {
     interface Math {
@@ -84,6 +79,14 @@ export class Camera {
 }
 
 const SCENE_SCALE = 0.005;
+const tmpMaterial = createDerivedMaterial(
+    new MeshBasicMaterial({ side: DoubleSide }),
+    {
+        vertexTransform: `
+        position.x *= -1.0;
+        `
+    }
+);
 export const flower = Macro(class Flower extends MacroElement {
     private canvas: HTMLCanvasElement;
 
@@ -100,6 +103,8 @@ export const flower = Macro(class Flower extends MacroElement {
     private drive: Group;
 
     private root: Group;
+
+    private lines: { model: Group, length: number }[] = [];
     
     constructor(dom: Node[], bindings: any) {
         super(dom, bindings);
@@ -125,7 +130,6 @@ export const flower = Macro(class Flower extends MacroElement {
         this.scene.add(this.camera.root);
         
         this.composer.addPass(new RenderPass(this.scene, this.camera.root));
-        this.bloom = new UnrealBloomPass(new Vector2(this.canvas.width, this.canvas.height), 0.05, 1, 0.9);
         this.composer.addPass(this.bloom = new UnrealBloomPass(new Vector2(this.canvas.width, this.canvas.height), 0.05, 1, 0.9));
         this.composer.addPass(this.bokeh = new BokehPass(this.scene, this.camera.root, {
             focus: 60 * SCENE_SCALE,
@@ -323,6 +327,47 @@ export const flower = Macro(class Flower extends MacroElement {
         this.camera.root.position.copy(position);
         this.camera.root.rotation.set(rotation.x, rotation.y, rotation.z, "YXZ");
 
+        const background: [start: string, end: string, repetition: number, color: ColorRepresentation][] = [
+            ["T", "RANSFORM", 8, 0xff0000],
+            ["E", "NGINEER", 9, 0xff5300],
+            ["C", "HANGE", 10, 0xffa500],
+            ["H", "YBRID", 11, 0xffd200],
+            ["N", "ATURE", 10, 0xffff00],
+            ["I", "NVENT", 11, 0x80c000],
+            ["C", "ATALYSE", 9, 0x008000],
+            ["O", "PERATE", 9, 0x004080],
+            ["L", "EAGUE", 9, 0x0000ff],
+            ["O", "BEISM", 10, 0x2600c1],
+            ["R", "UMBLE", 10, 0x4b0082],
+        ];
+
+        this.lines = new Array(background.length);
+        for (let i = 0; i < background.length; ++i) {
+            const args = background[i]; 
+            const model = new Group();
+            const left = this.createText(...args);
+            const right = this.createText(...args);
+            left.addEventListener("synccomplete", () => {
+                const bounds = (left as any).textRenderInfo.blockBounds;
+                const width = (bounds[2] - bounds[0]);
+                left.position.x = width / -2;
+                this.lines[i].length = width;
+
+                const height = (bounds[3] - bounds[1]);
+                model.position.y = (background.length - i - 1) * height - height * background.length / 2;
+            });
+            right.addEventListener("synccomplete", () => {
+                const bounds = (right as any).textRenderInfo.blockBounds;
+                right.position.x = (bounds[2] - bounds[0]) / 2;
+            });
+            model.add(left, right);
+            this.lines[i] = {
+                model,
+                length: 0
+            };
+            this.scene.add(model);
+        }
+
         window.addEventListener("mousemove", (event) => {
             const x = event.clientX / window.innerWidth;
             const y = event.clientY / window.innerHeight;
@@ -340,19 +385,44 @@ export const flower = Macro(class Flower extends MacroElement {
         this.render();
     }
 
+    private createText(start: string, end: string, repetition: number, color: ColorRepresentation) {
+        const tmp = new Text();
+        tmp.font = "./fonts/microgramma/microgramma.otf";
+        tmp.fontSize = 47 * SCENE_SCALE;
+        tmp.textAlign = "center";
+        tmp.anchorX = "center";
+        tmp.anchorY = "bottom";
+        tmp.material = tmpMaterial;
+        this.scene.add(tmp);
+        
+        tmp.colorRanges = {};
+
+        let string = "";
+        for (let i = 0; i < repetition; ++i) {
+            if (i % 2 === 0) (tmp.colorRanges as any)[string.length] = color;
+            string += start;
+            (tmp.colorRanges as any)[string.length] = 0x010101;
+            string += end;
+        }
+
+        tmp.text = string;
+        tmp.position.set(0, 0, 180 * SCENE_SCALE);
+
+        return tmp;
+    }
+
     private resize() {
         const computed = getComputedStyle(this.canvas);
         const width = parseInt(computed.width);
         const height = parseInt(computed.height);
 
         this.camera.resize(width, height);
-        this.renderer.setPixelRatio(window.devicePixelRatio);
         this.renderer.setSize(width, height, false);
         this.bloom.setSize(width, height);
         this.bokeh.setSize(width, height);
         this.composer.setSize(width, height);
 
-        this.bokeh.uniforms.aspect.value = 16 / 9;
+        this.bokeh.uniforms.aspect.value = 3440 / 1440;
 
         if (width > 1000) {
             this.root.position.x = -130 * SCENE_SCALE;
@@ -373,6 +443,12 @@ export const flower = Macro(class Flower extends MacroElement {
         this.time += dt;
 
         this.composer.render();
+
+        const scrollDuration = 25;
+        const t = this.time % scrollDuration / scrollDuration;
+        for (const line of this.lines) {
+            line.model.position.x = (1 - t) * line.length - line.length / 2;
+        }
 
         const sway = 3.5;
 
