@@ -100,8 +100,10 @@ const style = Style(({ style }) => {
     `;
     style `
     @media screen and (max-width: 1000px) {
-        -webkit-mask-image: radial-gradient(circle at 50% 60%, transparent, black 80%);
-        mask-image: radial-gradient(circle at 50% 60%, transparent 0%, black 80%);
+        ${backdrop} {
+            -webkit-mask-image: radial-gradient(circle at 50% 60%, transparent, black 80%);
+            mask-image: radial-gradient(circle at 50% 60%, transparent 0%, black 80%);
+        }
     }
 
     @media screen and (max-height: 1000px) {
