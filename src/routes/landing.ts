@@ -106,34 +106,56 @@ const style = Style(({ style }) => {
     height: 100%; 
     color: rgba(255, 255, 255, 0.05); 
     overflow: hidden; 
-    font-size: 5rem; 
     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
     -webkit-mask-image: radial-gradient(circle at 60% 60%, transparent, black 97%);
-    mask-image: radial-gradient(circle at 60% 60%, transparent 00%, black 40%);
+    mask-image: radial-gradient(circle at 60% 60%, transparent 0%, black 50%);
+    font-size: 5rem; 
     line-height: 5rem;
     `;
     style`
-    ${backdrop}>div {
+    @media screen and (max-height: 1000px) {
+        ${backdrop} {
+            font-size: 5rem; 
+            line-height: 5rem;
+        }
+    }
+    @media screen and (max-height: 900px) {
+        ${backdrop} {
+            font-size: 4rem; 
+            line-height: 4rem;
+        }
+    }
+    @media screen and (max-height: 800px) {
+        ${backdrop} {
+            font-size: 3rem; 
+            line-height: 3rem;
+        }
+    }
+    @media screen and (max-height: 700px) {
+        ${backdrop} {
+            font-size: 2.5rem; 
+            line-height: 2.5rem;
+        }
+    }`;
+
+    const scrollAnim = style.class`
         white-space: nowrap;
         overflow: hidden;
         display: inline-block;
-        animation-name: scroll;
-        animation-duration: 20s;
-        animation-timing-function: linear;
-        animation-iteration-count: infinite;
-        animation-play-state: running;
-        animation-delay: -10s;
-    }
-    ${backdrop}>div>p {
+        animation: scroll 20s linear infinite;
+        animation-delay: -5s;
+    `;
+    style`
+    ${scrollAnim} p {
         display: inline-block
     }
 
     @keyframes scroll {
         0% {
-            transform: translate3d(0%, 0, 0);
+            transform: translateX(0%);
         }
         100% {
-            transform: translate3d(-50%, 0, 0);
+            transform: translateX(-50%);
         }
     }
     `;
@@ -142,7 +164,8 @@ const style = Style(({ style }) => {
         wrapper,
         backdrop,
         bottomCurve,
-        header
+        header,
+        scrollAnim
     };
 });
 
@@ -163,12 +186,12 @@ export const landing = Macro(class Landing extends MacroElement {
         for (let i = 0; i < 2; ++i) {
             html += (() => {
                 return `
-            <div>
+            <div class="${style.scrollAnim}">
                 ${(() => {
                     let html = "";
                     for (let i = 0; i < 2; ++i) {
                         html += `<p>`;
-                        for (let j = 0; j < 5; ++j) {
+                        for (let j = 0; j < 8; ++j) {
                             if (j % 2 === 0) html += `<span style="color: rgba(255, 0, 0, 1);">T</span>RANSFORM`;
                             else html += `TRANSFORM`;
                         }
@@ -178,12 +201,12 @@ export const landing = Macro(class Landing extends MacroElement {
                 })()}
             </div>
 
-            <div>
+            <div class="${style.scrollAnim}">
                 ${(() => {
                     let html = "";
                     for (let i = 0; i < 2; ++i) {
                         html += `<p>`;
-                        for (let j = 0; j < 6; ++j) {
+                        for (let j = 0; j < 9; ++j) {
                             if (j % 2 === 0) html += `<span style="color: rgba(255, 83, 0, 1);">E</span>NGINEER`;
                             else html += `ENGINEER`;
                         }
@@ -193,12 +216,12 @@ export const landing = Macro(class Landing extends MacroElement {
                 })()}
             </div>
 
-            <div>
+            <div class="${style.scrollAnim}">
                 ${(() => {
                     let html = "";
                     for (let i = 0; i < 2; ++i) {
                         html += `<p>`;
-                        for (let j = 0; j < 7; ++j) {
+                        for (let j = 0; j < 10; ++j) {
                             if (j % 2 === 0) html += `<span style="color: rgba(255, 165, 0, 1);">C</span>HANGE`;
                             else html += `CHANGE`;
                         }
@@ -208,12 +231,12 @@ export const landing = Macro(class Landing extends MacroElement {
                 })()}
             </div>
 
-            <div>
+            <div class="${style.scrollAnim}">
                 ${(() => {
                     let html = "";
                     for (let i = 0; i < 2; ++i) {
                         html += `<p>`;
-                        for (let j = 0; j < 8; ++j) {
+                        for (let j = 0; j < 11; ++j) {
                             if (j % 2 === 0) html += `<span style="color: rgba(255, 210, 0, 1);">H</span>YBRID`;
                             else html += `HYBRID`;
                         }
@@ -223,12 +246,12 @@ export const landing = Macro(class Landing extends MacroElement {
                 })()}
             </div>
 
-            <div>
+            <div class="${style.scrollAnim}">
                 ${(() => {
                     let html = "";
                     for (let i = 0; i < 2; ++i) {
                         html += `<p>`;
-                        for (let j = 0; j < 7; ++j) {
+                        for (let j = 0; j < 10; ++j) {
                             if (j % 2 === 0) html += `<span style="color: rgba(255, 255, 0, 1);">N</span>ATURE`;
                             else html += `NATURE`;
                         }
@@ -238,12 +261,12 @@ export const landing = Macro(class Landing extends MacroElement {
                 })()}
             </div>
 
-            <div>
+            <div class="${style.scrollAnim}">
                 ${(() => {
                     let html = "";
                     for (let i = 0; i < 2; ++i) {
                         html += `<p>`;
-                        for (let j = 0; j < 8; ++j) {
+                        for (let j = 0; j < 11; ++j) {
                             if (j % 2 === 0) html += `<span style="color: rgba(128, 192, 0, 1);">I</span>NVENT`;
                             else html += `INVENT`;
                         }
@@ -253,12 +276,12 @@ export const landing = Macro(class Landing extends MacroElement {
                 })()}
             </div>
 
-            <div>
+            <div class="${style.scrollAnim}">
                 ${(() => {
                     let html = "";
                     for (let i = 0; i < 2; ++i) {
                         html += `<p>`;
-                        for (let j = 0; j < 6; ++j) {
+                        for (let j = 0; j < 9; ++j) {
                             if (j % 2 === 0) html += `<span style="color: rgba(0, 128, 0, 1);">C</span>ATALYSE`;
                             else html += `CATALYSE`;
                         }
@@ -268,12 +291,12 @@ export const landing = Macro(class Landing extends MacroElement {
                 })()}
             </div>
 
-            <div>
+            <div class="${style.scrollAnim}">
                 ${(() => {
                     let html = "";
                     for (let i = 0; i < 2; ++i) {
                         html += `<p>`;
-                        for (let j = 0; j < 6; ++j) {
+                        for (let j = 0; j < 9; ++j) {
                             if (j % 2 === 0) html += `<span style="color: rgba(0, 64, 128, 1);">O</span>PERATE`;
                             else html += `OPERATE`;
                         }
@@ -283,12 +306,12 @@ export const landing = Macro(class Landing extends MacroElement {
                 })()}
             </div>
 
-            <div>
+            <div class="${style.scrollAnim}">
                 ${(() => {
                     let html = "";
                     for (let i = 0; i < 2; ++i) {
                         html += `<p>`;
-                        for (let j = 0; j < 6; ++j) {
+                        for (let j = 0; j < 9; ++j) {
                             if (j % 2 === 0) html += `<span style="color: rgba(0, 0, 255, 1);">L</span>EAGUE`;
                             else html += `LEAGUE`;
                         }
@@ -298,12 +321,12 @@ export const landing = Macro(class Landing extends MacroElement {
                 })()}
             </div>
 
-            <div>
+            <div class="${style.scrollAnim}">
                 ${(() => {
                     let html = "";
                     for (let i = 0; i < 2; ++i) {
                         html += `<p>`;
-                        for (let j = 0; j < 7; ++j) {
+                        for (let j = 0; j < 10; ++j) {
                             if (j % 2 === 0) html += `<span style="color: rgba(38, 0, 193, 1);">O</span>BEISM`;
                             else html += `OBEISM`;
                         }
@@ -313,12 +336,12 @@ export const landing = Macro(class Landing extends MacroElement {
                 })()}
             </div>
 
-            <div>
+            <div class="${style.scrollAnim}">
                 ${(() => {
                     let html = "";
                     for (let i = 0; i < 2; ++i) {
                         html += `<p>`;
-                        for (let j = 0; j < 7; ++j) {
+                        for (let j = 0; j < 10; ++j) {
                             if (j % 2 === 0) html += `<span style="color: rgba(75, 0, 130, 1);">R</span>UMBLE`;
                             else html += `RUMBLE`;
                         }

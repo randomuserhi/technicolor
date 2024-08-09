@@ -4,13 +4,15 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 const loader = new GLTFLoader();
 const dracoLoader = new DRACOLoader();
-dracoLoader.setDecoderPath("../js3party/three/examples/jsm/libs/draco/");
+dracoLoader.setDecoderPath(new URL("./js3party/three/examples/jsm/libs/draco/", document.baseURI).toString());
 loader.setDRACOLoader( dracoLoader );
 
 const loadedGLTF = new Map<string, () => Group>();
 const loadingGLTF = new Map<string, { promise: Promise<() => Group>; terminate: (reason: any) => void }>();
 
 export async function loadGLTF(path: string): Promise<() => Group> {
+    path = new URL(path, document.baseURI).toString();
+
     if (loadedGLTF.has(path)) {
         return new Promise((resolve) => {
             resolve(loadedGLTF.get(path)!);

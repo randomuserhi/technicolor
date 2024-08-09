@@ -7,7 +7,8 @@ const port = 3000;
 const baseDir = path.join(__dirname, 'build');
 
 const server = http.createServer((req, res) => {
-    let filePath = path.join(baseDir, req.url === '/' ? 'main.html' : req.url);
+    let filePath = path.join(baseDir, req.url === '/' ? 'index.html' : req.url);
+    console.log(filePath);
     const extname = path.extname(filePath).toLowerCase();
     const mimeTypes = {
         '.html': 'text/html',
