@@ -86,7 +86,6 @@ export const flower = Macro(class Flower extends MacroElement {
             maxblur: 0.01,
         }));
         this.composer.addPass(new OutputPass());
-        window.bokeh = this.bokeh;
         const pointLight = new PointLight(0xFFFFFF, 10, undefined, 0.25);
         this.camera.root.add(pointLight);
         pointLight.position.set(0, 0, 0);
@@ -254,18 +253,15 @@ export const flower = Macro(class Flower extends MacroElement {
     }
     resize() {
         const computed = getComputedStyle(this.canvas);
-        let width = parseInt(computed.width);
-        let height = parseInt(computed.height);
-        if (mobile) {
-            width *= 2;
-            height *= 2;
-        }
+        const width = parseInt(computed.width);
+        const height = parseInt(computed.height);
         this.camera.resize(width, height);
         this.renderer.setPixelRatio(window.devicePixelRatio);
         this.renderer.setSize(width, height, false);
         this.bloom.setSize(width, height);
         this.bokeh.setSize(width, height);
         this.composer.setSize(width, height);
+        this.bokeh.uniforms.aspect.value = 16 / 9;
         if (width > 1000) {
             this.root.position.x = -130 * SCENE_SCALE;
         }
