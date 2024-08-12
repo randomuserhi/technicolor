@@ -68,10 +68,17 @@ const style = Style(({ style }) => {
     `;
 
     header.main = style.class`
-    font-size: 1.5rem;
+    font-size: 2rem;
     -webkit-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    `;
+    style`
+    @media screen and (max-width: 1000px) {
+        ${header.main} {
+            font-size: 1.5rem;
+        }
+    }
     `;
 
     header.actionList = style.class`
@@ -121,7 +128,7 @@ export const landing = Macro(class Landing extends MacroElement {
             <div style="position: relative; top: 0px; width: 100%;">
                 <div class="${style.header}">
                     <div style="flex: 1"></div>
-                    <div class="${style.header.main}">TECHNICOLOR</div>
+                    <div class="${style.header.main}">TECHNICOLOUR</div>
                     <div style="flex: 1"></div>
                 </div>
                 <div class="${style.header}">

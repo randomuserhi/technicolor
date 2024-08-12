@@ -105,6 +105,7 @@ export const flower = Macro(class Flower extends MacroElement {
     private root: Group;
 
     private lines: { model: Group, length: number }[] = [];
+    private textColorRanges: any[];
     
     constructor(dom: Node[], bindings: any) {
         super(dom, bindings);
@@ -134,7 +135,7 @@ export const flower = Macro(class Flower extends MacroElement {
         this.composer.addPass(this.bokeh = new BokehPass(this.scene, this.camera.root, {
             focus: 60 * SCENE_SCALE,
             aperture: 0.025,
-            maxblur: 0.01,
+            maxblur: 0.004,
         }));
         this.composer.addPass(new OutputPass());
 
@@ -147,7 +148,7 @@ export const flower = Macro(class Flower extends MacroElement {
         this.scene.add(light);
 
         const root = this.root = new Group();
-        root.position.set(-120, -135, 0).multiplyScalar(SCENE_SCALE);
+        root.position.set(-120, -155, 0).multiplyScalar(SCENE_SCALE);
         root.rotation.set(45 * Math.deg2rad, -55 * Math.deg2rad, 0, "YXZ");
         this.scene.add(root);
         
@@ -212,6 +213,126 @@ export const flower = Macro(class Flower extends MacroElement {
                 inner.quaternion.copy(rotation);
                 outer.quaternion.copy(rotation);
             }
+        }).then(() => {
+            loadGLTF("./js3party/models/petal-small.glb").then((factory) => {
+                for (let i = 0; i < 3; ++i) {
+                    const inner = factory();
+                    inner.scale.set(SCENE_SCALE, SCENE_SCALE, SCENE_SCALE);
+                
+                    const innerMaterial = new MeshPhysicalMaterial({
+                        color: 0x3f7ee8,
+                        emissive: 0x3f7ee8,
+                        emissiveIntensity: 2.5,
+                        ior: 1.5,
+                        specularIntensity: 1,
+                        specularColor: 0xffffff,
+                        side: DoubleSide
+                    });
+    
+                    inner.traverse((obj: Object3D) => {
+                        const mesh = obj as Mesh;
+                        if (mesh.isMesh === true) {
+                            mesh.material = innerMaterial;
+                            mesh.scale.set(0.95, 0.95, 0.95);
+                            this.gears.push(mesh);
+                        }
+                    });
+    
+                    flower.add(inner);
+    
+                    const outer = factory();
+                    outer.scale.set(SCENE_SCALE, SCENE_SCALE, SCENE_SCALE);
+    
+                    const outerMaterial = Object.assign(new MeshTransmissionMaterial(10), {
+                        clearcoat: 1,
+                        clearcoatRoughness: 0.1,
+                        transmission: 1,
+                        chromaticAberration: 1,
+                        anisotrophicBlur: 0.3,
+                        // Set to > 0 for diffuse roughness
+                        roughness: 0,
+                        thickness: 4.5,
+                        ior: 1.5,
+                        side: DoubleSide
+                    });
+    
+                    outer.traverse((obj: Object3D) => {
+                        const mesh = obj as Mesh;
+                        if (mesh.isMesh === true) {
+                            mesh.material = outerMaterial;
+                            this.gears.push(mesh);
+                        }
+                    });
+    
+                    flower.add(outer);
+    
+                    const rotation = new Quaternion();
+                    rotation.setFromEuler(new Euler(0, 0, i * 120 * Math.deg2rad, "YXZ"));
+
+                    inner.quaternion.copy(rotation);
+                    outer.quaternion.copy(rotation);
+                }
+            });
+
+            loadGLTF("./js3party/models/petal.glb").then((factory) => {
+                for (let i = 0; i < 3; ++i) {
+                    const inner = factory();
+                    inner.scale.set(SCENE_SCALE, SCENE_SCALE, SCENE_SCALE);
+                
+                    const innerMaterial = new MeshPhysicalMaterial({
+                        color: 0x3f7ee8,
+                        emissive: 0x3f7ee8,
+                        emissiveIntensity: 2.5,
+                        ior: 1.5,
+                        specularIntensity: 1,
+                        specularColor: 0xffffff,
+                        side: DoubleSide
+                    });
+    
+                    inner.traverse((obj: Object3D) => {
+                        const mesh = obj as Mesh;
+                        if (mesh.isMesh === true) {
+                            mesh.material = innerMaterial;
+                            mesh.scale.set(0.95, 0.95, 0.95);
+                            this.gears.push(mesh);
+                        }
+                    });
+    
+                    flower.add(inner);
+    
+                    const outer = factory();
+                    outer.scale.set(SCENE_SCALE, SCENE_SCALE, SCENE_SCALE);
+    
+                    const outerMaterial = Object.assign(new MeshTransmissionMaterial(10), {
+                        clearcoat: 1,
+                        clearcoatRoughness: 0.1,
+                        transmission: 1,
+                        chromaticAberration: 1,
+                        anisotrophicBlur: 0.3,
+                        // Set to > 0 for diffuse roughness
+                        roughness: 0,
+                        thickness: 4.5,
+                        ior: 1.5,
+                        side: DoubleSide
+                    });
+    
+                    outer.traverse((obj: Object3D) => {
+                        const mesh = obj as Mesh;
+                        if (mesh.isMesh === true) {
+                            mesh.material = outerMaterial;
+                            this.gears.push(mesh);
+                        }
+                    });
+    
+                    flower.add(outer);
+    
+                    const rotation = new Quaternion();
+                    rotation.setFromEuler(new Euler(0, 0, i * 120 * Math.deg2rad + 60 * Math.deg2rad, "YXZ"));
+
+                    inner.quaternion.copy(rotation);
+                    outer.quaternion.copy(rotation);
+                }
+            });
         });
 
         loadGLTF("./js3party/models/pushrod.glb").then((factory) => {
@@ -328,20 +449,22 @@ export const flower = Macro(class Flower extends MacroElement {
         this.camera.root.rotation.set(rotation.x, rotation.y, rotation.z, "YXZ");
 
         const background: [start: string, end: string, repetition: number, color: ColorRepresentation][] = [
-            ["T", "RANSFORM", 8, 0xff0000],
-            ["E", "NGINEER", 9, 0xff5300],
-            ["C", "HANGE", 10, 0xffa500],
-            ["H", "YBRID", 11, 0xffd200],
-            ["N", "ATURE", 10, 0xffff00],
-            ["I", "NVENT", 11, 0x80c000],
-            ["C", "ATALYSE", 9, 0x008000],
-            ["O", "PERATE", 9, 0x004080],
-            ["L", "EAGUE", 9, 0x0000ff],
-            ["O", "BEISM", 10, 0x2600c1],
-            ["R", "UMBLE", 10, 0x4b0082],
+            ["T", "RANSFORM", 10, 0xec1313 /*0xff0000*/],
+            ["E", "NGINEER", 10, 0xec5b13 /*0xff5300*/],
+            ["C", "HANGE", 10, 0xeca013 /*0xffa500*/],
+            ["H", "YBRID", 10, 0xecc413 /*0xffd200*/],
+            ["N", "ATURE", 10, 0xecec13 /*0xffff00*/],
+            ["I", "NVENT", 10, 0x7cb30f /*0x80c000*/],
+            ["C", "ATALYSE", 10, 0x0a760a /*0x008000*/],
+            ["O", "PERATE", 10, 0x0a4076 /*0x004080*/],
+            ["L", "OGIC", 10, 0x21313ec /*0x0000ff*/],
+            ["O", "RDER", 10, 0x300fb3 /*0x2600c1*/],
+            ["U", "NITY", 10, 0x430d9c /*0x4000a6*/],
+            ["R", "OBOTICS", 10, 0x490a76 /*0x4b0082*/],
         ];
 
         this.lines = new Array(background.length);
+        this.textColorRanges = new Array(background.length);
         for (let i = 0; i < background.length; ++i) {
             const args = background[i]; 
             const model = new Group();
@@ -354,7 +477,7 @@ export const flower = Macro(class Flower extends MacroElement {
                 this.lines[i].length = width;
 
                 const height = (bounds[3] - bounds[1]);
-                model.position.y = (background.length - i - 1) * height - height * background.length / 2;
+                model.position.y = (background.length - i - 1) * height - height * background.length / 2 + 0.03;
             });
             right.addEventListener("synccomplete", () => {
                 const bounds = (right as any).textRenderInfo.blockBounds;
@@ -364,6 +487,9 @@ export const flower = Macro(class Flower extends MacroElement {
             this.lines[i] = {
                 model,
                 length: 0
+            };
+            this.textColorRanges[i] = {
+                left, right, colorRanges: left.colorRanges
             };
             this.scene.add(model);
         }
@@ -388,7 +514,7 @@ export const flower = Macro(class Flower extends MacroElement {
     private createText(start: string, end: string, repetition: number, color: ColorRepresentation) {
         const tmp = new Text();
         tmp.font = "./fonts/microgramma/microgramma.otf";
-        tmp.fontSize = 47 * SCENE_SCALE;
+        tmp.fontSize = 42 * SCENE_SCALE;
         tmp.textAlign = "center";
         tmp.anchorX = "center";
         tmp.anchorY = "bottom";
@@ -401,7 +527,7 @@ export const flower = Macro(class Flower extends MacroElement {
         for (let i = 0; i < repetition; ++i) {
             if (i % 2 === 0) (tmp.colorRanges as any)[string.length] = color;
             string += start;
-            (tmp.colorRanges as any)[string.length] = 0x010101;
+            (tmp.colorRanges as any)[string.length] = 0x020202;
             string += end;
         }
 
@@ -426,8 +552,18 @@ export const flower = Macro(class Flower extends MacroElement {
 
         if (width > 1000) {
             this.root.position.x = -130 * SCENE_SCALE;
+
+            for (let i = 0; i < this.textColorRanges.length; ++i) {
+                this.textColorRanges[i].left.colorRanges = this.textColorRanges[i].colorRanges;
+                this.textColorRanges[i].right.colorRanges = this.textColorRanges[i].colorRanges;
+            }
         } else {
             this.root.position.x = -110 * SCENE_SCALE;
+
+            for (let i = 0; i < this.textColorRanges.length; ++i) {
+                this.textColorRanges[i].left.colorRanges = { };
+                this.textColorRanges[i].right.colorRanges = { };
+            }
         }
     }
 
