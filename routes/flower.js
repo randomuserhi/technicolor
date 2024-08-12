@@ -408,7 +408,7 @@ export const flower = Macro(class Flower extends MacroElement {
             if (i % 2 === 0)
                 tmp.colorRanges[string.length] = color;
             string += start;
-            tmp.colorRanges[string.length] = 0x010101;
+            tmp.colorRanges[string.length] = 0x020202;
             string += end;
         }
         tmp.text = string;
